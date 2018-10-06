@@ -30,3 +30,20 @@
     transform: rotate(360deg);
   }
 }
+
+
+#todo_app { font-family: sans-serif; padding: 10px; }
+h1 { text-align: center; }
+#todo { border-top: 1px solid black; border-left: 1px solid black; border-bottom: 1px solid black; display: flex; }
+div.column { border-right: 1px solid black; flex: 33%; }
+div.column .inside { padding: 10px; }
+#add_task { float: right; }
+div.row:not(.first) { border-top: 1px solid black; }
+ul { margin: 0; padding: 0; list-style: none; min-height: 3em; }
+ul.dragging {  background-color: #ffd; }
+li { margin: 10px; padding: 10px; border: 1px solid #ccc; background-color: #def; }
+#done li { background-color: #eee; }
+li.dragging { display: none; background-color: #dff; opacity: 0; }
+div.next-step { float: right; cursor: pointer; }
+span.drag-source { cursor: move; }
+#done .drag-source { color: #aaa; cursor: default; }
