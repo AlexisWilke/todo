@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowCircleRight, faBars } from '@fortawesome/free-solid-svg-icons'
 import { ItemTypes } from './ItemTypes';
 import { DragSource } from 'react-dnd';
-import InlineEdit from 'react-edit-inline';
+import InlineEdit from 'react-edit-inline2';
 
 
 var global_id = 0

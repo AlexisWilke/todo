@@ -31,6 +31,6 @@
   ],
   "devDependencies": {
     "@attently/riek": "^2.0.1",
-    "react-edit-inline": "^1.0.8"
+    "react-edit-inline2": "^1.0.1"
   }
 }
