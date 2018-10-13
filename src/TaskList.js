@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { DropTarget } from 'react-dnd';
-import { ItemTypes } from './ItemTypes';
-import Task from './Task.js';
+import { DropTarget } from 'react-dnd'
+import { ItemTypes } from './ItemTypes'
+import Task from './Task.js'
 
 
 const taskDestination = {
@@ -33,12 +33,12 @@ class TaskList extends Component {
             <Task key={this.props.tasks[p].id}
                   task={this.props.tasks[p]}
                   list={this.props.list}
-                  onChangeList={() => this.props.onChangeList(this.props.tasks[p])}
+                  nextListName={this.props.nextListName}
                   onChangeName={(new_name) => this.props.onChangeName(this.props.tasks[p], new_name)}/>
           )
       }
     }
-    return tasks;
+    return tasks
   }
 
   render() {
@@ -53,7 +53,7 @@ class TaskList extends Component {
 }
 
 
-export default DropTarget(ItemTypes.TASK, taskDestination, collect)(TaskList);
+export default DropTarget(ItemTypes.TASK, taskDestination, collect)(TaskList)
 
 
 // vim: ts=2 sw=2 et

@@ -1,66 +1,32 @@
-import React, { Component } from 'react';
-import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
-import AddTask from './AddTask.js';
-import TaskList from './TaskList.js';
-import Task from './Task.js';
-import './App.css';
+import React, { Component } from 'react'
+import { connect } from 'react-redux'
+import { DragDropContext } from 'react-dnd'
+import HTML5Backend from 'react-dnd-html5-backend'
+import AddTask from './AddTask.js'
+import TaskList from './TaskList.js'
+import './App.css'
+import store from "./store"
+import { actionMoveTask } from './State'
 
 
 // TODO: get version from Package info
-const version = "0.1.3";
+const version = "0.1.3"
 
 
 class App extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {
-        tasks: {  }
-      }
-
-    this.addNewTask = this.addNewTask.bind(this)
+    store.subscribe(() => {
+      this.setState(store.getState())
+    })
   }
 
-  addNewTask() {
-    let new_id = Task.getNextId()
-    let new_task = {
-        id: new_id,
-        name: "New Task #" + new_id,
-        list: "tasks"
-      }
 
-    this.setState(state => ({
-        tasks: {
-            ...state.tasks,
-            ["id" + new_task.id]: new_task
-          }
-      }))
+  handleMoveTask = (task, new_name) => {
+    return this.props.actionMoveTask(task, new_name)
   }
 
-  setTaskName(task, new_name) {
-    this.setState(state => ({
-        tasks: {
-            ...state.tasks,
-            ["id" + task.id]: {
-                ...state.tasks["id" + task.id],
-                "name": new_name.name
-              }
-          }
-      }))
-  }
-
-  moveTask(task, new_list) {
-    this.setState(state => ({
-        tasks: {
-            ...state.tasks,
-            ["id" + task.id]: {
-                ...state.tasks["id" + task.id],
-                "list": new_list
-              }
-          }
-      }))
-  }
 
   render() {
     return (
@@ -70,15 +36,14 @@ class App extends Component {
           <div className='column'>
             <div className='inside'>
               <div id='add_task'>
-                <AddTask onClick={() => { this.addNewTask() }}/>
+                <AddTask/>
               </div>
               <h2>Tasks</h2>
               <TaskList key='tasks'
                         list='tasks'
-                        tasks={this.state.tasks}
-                        onChangeList={(task) => { this.moveTask(task, 'processing') }}
-                        onChangeName={(task, new_name) => { this.setTaskName(task, new_name) }}
-                        onDrop={(task) => { this.moveTask(task, 'tasks') }}/>
+                        tasks={this.props.tasks}
+                        nextListName='processing'
+                        onDrop={(task) => { this.handleMoveTask(task, 'tasks') }}/>
             </div>
           </div>
           <div className='column'>
@@ -87,10 +52,9 @@ class App extends Component {
                 <h2>In Progress</h2>
                 <TaskList key='processing'
                           list='processing'
-                          tasks={this.state.tasks}
-                          onChangeList={(task) => { this.moveTask(task, 'done') }}
-                          onChangeName={(task, new_name) => { this.setTaskName(task, new_name) }}
-                          onDrop={(task) => { this.moveTask(task, 'processing') }}/>
+                          tasks={this.props.tasks}
+                          nextListName='done'
+                          onDrop={(task) => { this.handleMoveTask(task, 'processing') }}/>
               </div>
             </div>
             <div className='row'>
@@ -98,10 +62,9 @@ class App extends Component {
                 <h2>On Hold</h2>
                 <TaskList key='on_hold'
                           list='on_hold'
-                          tasks={this.state.tasks}
-                          onChangeList={(task) => { this.moveTask(task, 'done') }}
-                          onChangeName={(task, new_name) => { this.setTaskName(task, new_name) }}
-                          onDrop={(task) => { this.moveTask(task, 'on_hold') }}/>
+                          tasks={this.props.tasks}
+                          nextListName='done'
+                          onDrop={(task) => { this.handleMoveTask(task, 'on_hold') }}/>
               </div>
             </div>
           </div>
@@ -110,18 +73,23 @@ class App extends Component {
               <h2>Done</h2>
               <TaskList key='done'
                         list='done'
-                        tasks={this.state.tasks}
-                        onChangeName={(task, new_name) => { this.setTaskName(task, new_name) }}
-                        onDrop={(task) => { this.moveTask(task, 'done') }}/>
+                        tasks={this.props.tasks}
+                        onDrop={(task) => { this.handleMoveTask(task, 'done') }}/>
             </div>
           </div>
         </div>
+        <div><em>Double click task bar to delete it</em></div>
       </div>
-    );
+    )
   }
 }
 
 
-export default DragDropContext(HTML5Backend)(App);
+function mapStateToProps(state) {
+  return { tasks: state.tasks }
+}
+
+App = DragDropContext(HTML5Backend)(App)
+export default connect(mapStateToProps, { actionMoveTask })(App)
 
 // vim: ts=2 sw=2 et
