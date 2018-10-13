@@ -12,7 +12,7 @@ class AddTask extends Component {
 
   render() {
     return (
-      <button onClick={this.handleAddTask}>
+      <button onClick={this.handleAddTask} title="click to add a new task">
         <FontAwesomeIcon icon={faPlus}/>
       </button>
     )

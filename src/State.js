@@ -22,7 +22,7 @@ export const actionAddNewTask = () => {
   let new_id = taskNextId()
   let new_task = {
       id: new_id,
-      name: "New Task #" + new_id,
+      name: "New Task #" + new_id + " (click to edit text)",
       list: "tasks"
     }
 
